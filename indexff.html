@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mobile Legend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <script>
+        let selectedPrice = 0; // Variable to store the selected price
+        let selectedDiamonds = ""; // Variable to store the selected diamond package
+        let selectedDiamondsCount = 0; // Variable to store the count of selected diamonds
+
+        // Function to update the total price based on the selected package
+        function number(diamondsCount) {
+            const selectedDiamondsElement = document.getElementById('selected-diamonds-display');
+            selectedDiamondsElement.innerText = `💎 ${diamondsCount}`;
+        }
+
+        // Function to display the price in letters
+        function letter(price) {
+            const totalPriceElement = document.getElementById('total-price');
+            totalPriceElement.innerText = `ចំនួនទឹកប្រាក់: ${price.toFixed(2)}$`;
+        }
+
+        // Function to update the total price and selected diamonds
+        function updateTotalPrice(price, diamonds, count, diamondsName) {
+            // Update the selected price and diamonds count
+            selectedPrice = price;
+            selectedDiamondsCount = count;
+            selectedDiamonds = diamondsName;
+
+            // Call the letter function to update the price
+            letter(price);
+
+            // Call the number function to update the number of diamonds
+            number(count);
+
+            // Update the display for selected diamonds
+            const selectedDiamondsElement = document.getElementById('selected-diamonds-display');
+            selectedDiamondsElement.innerText = `💎 ${selectedDiamonds}`;
+        }
+
+        // Function to search for player information
+        async function searchPlayer() {
+            const userId = document.getElementById('user-id').value;
+            const zoneId = document.getElementById('zone-id').value;
+
+            if (userId && zoneId) {
+                try {
+                    // Replace with the actual API endpoint
+                    const response = await fetch(`https://api.example.com/mobilelegends/player?userId=${userId}&zoneId=${zoneId}`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+
+                    if (data.success) {
+                        const playerData = data.player; // Adjust based on actual API response structure
+                        const resultElement = document.getElementById('player-result');
+                        resultElement.innerHTML = `
+                            <h3 class="font-bold">Player Information:</h3>
+                            <p>Name: ${playerData.realName}</p>
+                            <p>Rank: ${playerData.rank}</p>
+                            <p>Diamonds: ${playerData.diamonds}</p>
+                        `;
+                    } else {
+                        alert("Player not found. Please check the User ID and Zone ID.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching player data:", error);
+                    alert("An error occurred while fetching player data: " + error.message);
+                }
+            } else {
+                alert("Please enter both User ID and Zone ID.");
+            }
+        }
+
+        function handlePayment() {
+            if (selectedPrice > 0) {
+                // Here you would typically generate a payment link or QR code
+                // For demonstration, we'll just alert the user
+                alert(`Initiating payment of ${selectedPrice.toFixed(2)}$ for ${selectedDiamonds}`);
+                
+                // Example: Redirect to ABA payment URL (this is a placeholder)
+                // window.location.href = `https://aba-payment-url.com/pay?amount=${selectedPrice}&diamonds=${selectedDiamondsCount}`;
+            } else {
+                alert("Please select a diamond package before proceeding to payment.");
+            }
+        }
+
+        // Add event listener to total price span
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const totalPriceElement = document.getElementById('total-price');
+            totalPriceElement.addEventListener('click', handlePayment);
+        });
+    </script>
+</head>
+<body class="bg-black text-white">
+    <div class="max-w-md mx-auto bg-black">
+        <!-- Header -->
+        <div class="bg-pink-500 p-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="index.html">
+                    <i class="fas fa-home text-white text-2xl"></i>
+                </a>
+                <span class="ml-2 text-white text-lg"></span>
+            </div>
+            <i class="fas fa-headphones text-white text-2xl"></i>
+        </div>
+        <!-- Main Content -->
+        <div class="p-4">
+            <div class="flex items-center">
+                <img alt="Mobile Legend logo" class="w-12 h-12" height="50" src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2F20250222_122339_4fd7f2b55b.jpg&w=1080&q=75" width="50"/>
+                <h1 class="text-2xl font-bold ml-4">FREE FIRE</h1>
+            </div>
+            <div class="flex mt-4">
+                <button class="bg-pink-500 text-white py-2 px-4 rounded-full mr-2">គណនីចូល</button>
+                <button class="bg-pink-500 text-white py-2 px-4 rounded-full">បញ្ចូលកូដ</button>
+            </div>
+            <p class="mt-4 text-sm">
+                ទិញពេជ្រ Free Fire ក្នុងតម្លៃសមរម្យ!​ តាមរយះអាយឌី​ ID របស់អ្នក,​ ជ្រើសរើសកញ្ចប់ពេជ្យ ដែលអ្នកពេញចិត្តទិញ,​ ដោយបង់ប្រាក់តាមមធ្យោបាយដែលអ្នកមាន, ពេជ្រនឹងបញ្ជូនទៅក្នុងគណនេយ្យ Free Fire របស់អ្នកក្នុងរយះពេលពីចន្លោះ 10នាទី ដល់ 3ម៉ោង។
+                បញ្ជាក់៖ នេះជាពេជ្រដែលមានតម្លៃសមរម្យដូច្នេះសូមអធ្យាស្រ័យក្នុងការរង់ចាំ។
+            </p>
+            <p class="mt-2 text-sm">
+                ចុចលើរូបAvatarនៅជ្រុងខាងឆ្វេងខាងលើនៃអេក្រង់ហ្គេម ដើម្បីស្វែងរកលេខ User ID របស់អ្នក។ រួចចុចប៊ូតុង Check ID ដើម្បីផ្ទៀងមើលឈ្មោះ (Account Name)
+            </p>
+        </div>
+        <!-- Form Section -->
+        <div class="bg-gray-800 p-4 rounded-lg mt-4">
+            <div class="flex items-center mb-4">
+                <span class="bg-pink-500 text-white rounded-full w-8 h-8 flex items-center justify-center">1</span>
+                <h2 class="text-lg font-bold ml-2">បញ្ចូលព័ត៌មានរបស់អ្នក</h2>
+            </div>
+            <div class="flex space-x-2 mb-4">
+                <input id="user-id" class="w-full p-2 rounded-lg border border-pink-500 bg-black text-white" placeholder="User  ID" type="text"/>
+            </div>
+            
+            <button class="bg-pink-500 text-white py-2 px-4 rounded-full mt-4 w-full" onclick="searchPlayer()">ពិនិត្យគណនី</button>
+            
+            <p class="mt-2 text-sm">
+                ដើម្បីបញ្ចូល UserID សូមចូលទៅកាន់គណនីរបស់អ្នក ហើយចុចលើរូបភាព Avatar នៅខាងឆ្វេងខាងលើ 
+                របស់អ្នក ហើយចុចលើ "Check ID" ហើយបញ្ចូល User ID និង Zone ID របស់អ្នក។ 
+                ឧទាហរណ៍: User ID: 123456789, Zone ID: 1234
+            </p>
+            <!-- Player Result Section -->
+            <div id="player-result" class="mt-4 text-white"></div>
+        </div>
+        <!-- Diamonds Section -->
+        <div class="bg-gray-800 p-4 rounded-lg mt-4">
+            <div class="flex items-center mb-4">
+                <span class="bg-pink-500 text-white rounded-full w-8 h-8 flex items-center justify-center">2</span>
+                <h2 class="text-lg font-bold ml-2">ជ្រើសរើសកញ្ចប់ពេជ្រ</h2>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(0.25, '25 diamond', 0.25, '25 diamond')">
+                    <div>
+                        <p>25 Diamond</p>
+                        <p class="text-yellow-400">0.25$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_1_f167ce2700.png&w=1080&q=75" alt="Diamond Image for 25 Diamond" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(1.00, '100 diamond', 1.00, '100 diamond')">
+                    <div>
+                        <p>100 Diamond</p>
+                        <p class="text-yellow-400">1.00$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_1_f167ce2700.png&w=1080&q=75" alt="Diamond Image for 100 Diamond" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(3.00, '310 diamond', 3.00, '310 diamond')">
+                    <div>
+                        <p>310 Diamond</p>
+                        <p class="text-yellow-400">3.00$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_1_f167ce2700.png&w=1080&q=75" alt="Diamond Image for 310 Diamond" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(4.50, '520 diamond', 4.50, '520 diamond')">
+                    <div>
+                        <p>520 Diamond</p>
+                        <p class="text-yellow-400">4.50$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_1_f167ce2700.png&w=1080&q=75" alt="Diamond Image for 520 Diamond" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(9.00, '1060 diamond', 9.00, '1060 diamond')">
+                    <div>
+                        <p>1060 Diamond</p>
+                        <p class="text-yellow-400">9.00$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_1_f167ce2700.png&w=1080&q=75" alt="Diamond Image for 1060 Diamond" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(18.00, '2180 diamond', 18.00, '2180 diamond')">
+                    <div>
+                        <p>2180 Diamond</p>
+                        <p class="text-yellow-400">18.00$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_1_f167ce2700.png&w=1080&q=75" alt="Diamond Image for 2180 Diamond" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(45.00, '5600 diamond', 45.00, '5600 diamond')">
+                    <div>
+                        <p>5600 Diamond</p>
+                        <p class="text-yellow-400">45.00$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_1_f167ce2700.png&w=1080&q=75" alt="Diamond Image for 5600 Diamond" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(94.00, '11500 diamond', 94.00, '11500 diamond')">
+                    <div>
+                        <p>11500 Diamond</p>
+                        <p class="text-yellow-400">94.00$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_1_f167ce2700.png&w=1080&q=75" alt="Diamond Image for 11500 Diamond" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(7.60, 'Monthly', 7.60, 'Monthly')">
+                    <div>
+                        <p>Monthly</p>
+                        <p class="text-yellow-400">7.60$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_13_e1cd5909e1.png&w=1080&q=75" alt="Diamond Image for Monthly" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(1.65, 'Weekly', 1.65, 'Weekly')">
+                    <div>
+                        <p>Weekly</p>
+                        <p class="text-yellow-400">1.65$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_10_f449f66c2b.png&w=1080&q=75" alt="Diamond Image for Weekly" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(0.60, 'Weekly lite', 0.60, 'Weekly lite')">
+                    <div>
+                        <p>Weekly lite</p>
+                        <p class="text-yellow-400">0.60$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_11_0617943d2d.png&w=1080&q=75" alt="Diamond Image for Weekly lite" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(0.70, 'EVO 3DAY', 0.70, 'EVO 3DAY')">
+                    <div>
+                        <p>EVO 3DAY</p>
+                        <p class="text-yellow-400">0.70$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_7_bb2b3cce7f.png&w=1080&q=75" alt="Diamond Image for EVO 3DAY" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(1.00, 'EVO 7DAY', 1.00, 'EVO 7DAY')">
+                    <div>
+                        <p>EVO 7DAY</p>
+                        <p class="text-yellow-400">1.00$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_7_bb2b3cce7f.png&w=1080&q=75" alt="Diamond Image for EVO 7DAY" class="w-8 h-8 ml-2">
+                </button>
+                <button class="bg-black text-white border border-pink-500 p-2 rounded-lg flex justify-between items-center" onclick="updateTotalPrice(2.50, 'EVO 30DAY', 2.50, 'EVO 30DAY')">
+                    <div>
+                        <p>EVO 30DAY</p>
+                        <p class="text-yellow-400">2.50$</p>
+                    </div>
+                    <img src="https://www.mamajiika.com/_next/image?url=https%3A%2F%2Fmama-cms.minttopup.xyz%2Fuploads%2FFREE_FIRE_7_bb2b3cce7f.png&w=1080&q=75" alt="Diamond Image for EVO 30DAY" class="w-8 h-8 ml-2">
+                </button>
+            </div>
+        </div>
+        <!-- Footer Section -->
+        <div class="bg-gray-800 p-4 rounded-lg mt-4">
+            <div class="flex items-center mb-4">
+                <span class="bg-pink-500 text-white rounded-full w-8 h-8 flex items-center justify-center">3</span>
+                <h2 class="ml-2 text-pink-500">វិធីសាស្រ្តបង់ប្រាក់</h2>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between p-4 border-2 border-pink-500 rounded-lg">
+                    <div class="flex items-center">
+                        <img alt="ABA logo" class="w-10 h-10 mr-4" height="50" src="https://www.mamajiika.com/_next/image?url=%2Fassets%2Fmain%2Faba-lg.webp&w=1080&q=75" width="50"/>
+                        <div>
+                            <h3 class="font-bold">ABA PAY</h3>
+                            <p class="text-sm">Scan to pay with ABA Mobile</p>
+                        </div>
+                    </div>
+                    <input class="form-radio text-pink-500" name="payment" type="radio"/>
+                </div>
+                <div class="flex items-center justify-between p-4 border-2 border-pink-500 rounded-lg">
+                    <div class="flex items-center">
+                        <img alt="KHQR logo" class="w-10 h-10 mr-4" height="50" src="https://www.mamajiika.com/_next/image?url=%2Fassets%2Fmain%2Fkhqr-lg.webp&w=1080&q=75" width="50"/>
+                        <div>
+                            <h3 class="font-bold">KHQR</h3>
+                            <p class="text-sm">Scan to pay with any banking app</p>
+                        </div>
+                    </div>
+                    <input class="form-radio text-pink-500" name="payment" type="radio"/>
+                </div>
+            
+                <div id="additional-payments" class="space-y-4 hidden">
+                    <div class="flex items-center justify-between p-4 border-2 border-pink-500 rounded-lg">
+                        <div class="flex items-center">
+                            <img alt="Payment 1 logo" class="w-10 h-10 mr-4" height="50" src="https://www.mamajiika.com/_next/image?url=%2Fassets%2Fmain%2Fac-lg.webp&w=3840&q=75" width="50"/>
+                            <div>
+                                <h3 class="font-bold">ACLEDA BANK</h3>
+                                <p class="text-sm">Scan to pay with ACLEDA Mobile</p>
+                            </div>
+                        </div>
+                        <input class="form-radio text-pink-500" name="payment" type="radio"/>
+                    </div>
+                    
+                    <div class="flex items-center justify-between p-4 border-2 border-pink-500 rounded-lg">
+                        <div class="flex items-center">
+                            <img alt="Payment 2 logo" class="w-10 h-10 mr-4" height="50" src="https://www.mamajiika.com/_next/image?url=%2Fassets%2Fmain%2Fwing-lg.webp&w=3840&q=75" width="50"/>
+                            <div>
+                                <h3 class="font-bold">WING</h3>
+                                <p class="text-sm">Scan to pay with WING Mobile</p>
+                            </div>
+                        </div>
+                        
+                        <input class="form-radio text-pink-500" name="payment" type="radio"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex justify-center mt-4 cursor-pointer" onclick="togglePayments()">
+                <i id="toggle-arrow" class="fas fa-chevron-down text-pink-500"></i>
+            </div>
+            
+            
+            <script>
+                function togglePayments() {
+                    const paymentsDiv = document.getElementById("additional-payments");
+                    const arrowIcon = document.getElementById("toggle-arrow");
+            
+                    // Toggle visibility of additional payments
+                    if (paymentsDiv.classList.contains("hidden")) {
+                        paymentsDiv.classList.remove("hidden");
+                        arrowIcon.classList.remove("fa-chevron-down");
+                        arrowIcon.classList.add("fa-chevron-up");
+                    } else {
+                        paymentsDiv.classList.add("hidden");
+                        arrowIcon.classList.remove("fa-chevron-up");
+                        arrowIcon.classList.add("fa-chevron-down");
+                    }
+                }
+            </script>
+            
+            <div class="mt-4">
+                <h3 class="font-bold">TERMS &amp; CONDITION</h3>
+                <div class="flex items-center mt-2">
+                    <input checked="" class="form-checkbox text-blue-500" type="checkbox"/>
+                    <span class="ml-2">
+                        ខ្ញុំយល់ព្រមតាម
+                        <a class="text-pink-500 underline" href="#">លក្ខខណ្ឌ</a>
+                    </span>
+                </div>
+                <div class="flex items-center mt-2">
+                    <span>សរុប:</span>
+                    <span class="ml-2 text-blue-500" id="selected-diamonds-display">💎 0</span> <!-- New element to show selected diamonds -->
+                    <span class="ml-2 text-blue-500">💎 </span>
+                    <span id="total-price" class="ml-auto bg-pink-500 text-pink-200 px-2 py-1 rounded">ចំនួនទឹកប្រាក់: 0.00$</span>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-10">
+            <h3 class="font-bold">Contact Us:</h3>
+            <div class="flex justify-center space-x-4 mt-2">
+                <a href="#"><i class="fab fa-facebook text-2xl"></i></a>
+                <a href="#"><i class="fab fa-telegram text-2xl"></i></a>
+                <a href="#"><i class="fab fa-tiktok text-2xl"></i></a>
+            </div>
+            <h3 class="font-bold mt-4">Accept Payment:</h3>
+            <img alt="KHQR logo" class="mx-auto mt-2" height="50" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSWJlTraULw6cVO5G2ZQoh495V0yPjuOZJ3g&s" width="100"/>
+        </div>
+        <div class="text-center mt-4">
+            <a class="text-white underline" href="#">Privacy Policy</a> |
+            <a class="text-white underline" href="#">Terms and Condition</a>
+        </div>
+    </div>
+    
+    <script>
+        // Popup functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const popup = document.getElementById("popup");
+            popup.classList.remove("hidden"); // Show the popup automatically when the page loads
+        });
+
+        function closePopup() {
+            const popup = document.getElementById("popup");
+            popup.classList.add("hidden"); // Hide the popup when the X is clicked
+        }
+    </script>
+</head>
+
+<!-- Popup (initially hidden) -->
+<div id="popup" class="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+    <div class="bg-black p-6 rounded-lg relative w-4/5 md:w-1/3">
+        <button onclick="closePopup()" class="absolute top-2 right-2 text-white text-2xl">
+            <i class="fas fa-times"></i>
+        </button>
+        <h2 class="text-2xl text-white font-bold">សូមស្វាគមន៍មកកាន់ Mobile Legends!</h2>
+        <p class="text-white mt-4">Happy Khmer New Year 2025!</p>
+        
+        <!-- Image or Sticker inside the popup -->
+        <div class="mt-4 text-center">
+            <img class="mx-auto" src="https://www.line-stickers.com/wp-content/uploads/2020/06/Angkor-Sankranta-.png" alt="Sticker or Image" class="w-32 h-32 object-cover rounded-lg">
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
